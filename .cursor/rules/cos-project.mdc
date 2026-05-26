@@ -1,0 +1,36 @@
+---
+description: Chief of Staff Agent (BigBoss) — project rules for Cursor AI
+---
+
+# Chief of Staff Agent — Cursor Rules
+
+## Start Here
+
+**Always read `MEMORY.md` first.**
+
+**For acceptance criteria (all 23 Key Features):** always read **`docs/ACCEPTANCE_CRITERIA.md`** — canonical wording, AC IDs, rollup, gaps, and per-criterion proof.
+
+**Contributor proof:** `pnpm acceptance` (build + test + file checks). **Executive proof:** `@bigboss` + live APIs — no fixture ingest on product paths.
+
+## Product surface
+
+**Executives use Cursor only** — `@bigboss` in chat or the agent picker. See `README.md` and `docs/DEPLOYMENT.md`. Do **not** document `pnpm` commands in user-facing README text.
+
+**Contributors** use `CONTRIBUTING.md` for CLI and CI.
+
+## Hard Rules — Never Violate
+
+1. **No auto-send.** No send/post/create on Gmail, Asana, or any service.
+2. **No secrets in code or logs.** Never log tokens or raw email body text.
+3. **Vercel AI SDK only** for LLM (`ai` package).
+4. **`ownerUserId` filter** on every RAG query.
+5. **LangSmith** at every AI entrypoint; `LangSmith.flush()` on exit.
+6. **TypeScript only.** Vitest for tests.
+7. **No mock/fixture ingest or RAG on product paths.** Mocks only in `__tests__/` with `COS_ALLOW_FIXTURES=true` or `pnpm demo-fixtures` (CI).
+
+## AC-02
+
+Packaged as reusable soofi ecosystem agent: `.cursor-plugin/plugin.json` + `agents/bigboss.md`. Optional team-kit plugin is for **contributor build-time** guidance only — operators use `@bigboss` + cos-runtime; team-kit subagents are not runtime workers. See `docs/ARCHITECTURE.md` § Runtime vs build-time.
+
+Architecture: `docs/ARCHITECTURE.md`  
+Deployment: `docs/DEPLOYMENT.md`
