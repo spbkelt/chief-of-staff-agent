@@ -56,23 +56,7 @@ run_cmd "ingest (calendar only)" pnpm ingest -- --connector gcal && record pass 
 run_cmd "ingest last 7d" pnpm ingest -- --period 7d && record pass || record fail
 
 # Resolve IDs for lifecycle commands
-IDS=$(cd apps/cos-runtime && npx tsx -e "
-import 'dotenv/config';
-import { applyCosRuntimeEnv } from './src/config/runtime-env.js';
-import { initSchema } from './src/graph/graph.db.js';
-import { identityId } from './src/graph/canonical-id.js';
-import { getEnv } from './src/config/env.js';
-import { backendGetNodesByType } from './src/graph/backend.js';
-
-applyCosRuntimeEnv();
-await initSchema();
-const env = getEnv();
-const owner = identityId(env.COS_OWNER_EMAIL ?? '');
-const notifs = await backendGetNodesByType(owner, 'Notification');
-const tasks = await backendGetNodesByType(owner, 'AsanaTask');
-const threads = await backendGetNodesByType(owner, 'EmailThread');
-console.log([notifs[0]?.canonicalId ?? '', tasks[0]?.canonicalId ?? '', threads[0]?.canonicalId ?? ''].join('|'));
-" 2>/dev/null) || IDS="||"
+IDS=$(cd apps/cos-runtime && npx tsx -e '(async()=>{const {applyCosRuntimeEnv}=await import("./src/config/runtime-env.js");const {initSchema}=await import("./src/graph/graph.db.js");const {identityId}=await import("./src/graph/canonical-id.js");const {getEnv}=await import("./src/config/env.js");const {backendGetNodesByType}=await import("./src/graph/backend.js");applyCosRuntimeEnv();await initSchema();const o=identityId(getEnv().COS_OWNER_EMAIL??"");const notifs=await backendGetNodesByType(o,"Notification");const tasks=await backendGetNodesByType(o,"AsanaTask");const threads=await backendGetNodesByType(o,"EmailThread");console.log([notifs[0]?.canonicalId??"",tasks[0]?.canonicalId??"",threads[0]?.canonicalId??""].join("|"));})();' 2>/dev/null) || IDS="||"
 
 NOTIF_ID="${IDS%%|*}"
 REST="${IDS#*|}"
@@ -95,20 +79,7 @@ fi
 TARGET="${THREAD_ID:-$TASK_ID}"
 if [[ -n "$TARGET" ]]; then
   run_cmd "suggest" pnpm suggest -- "$TARGET" && record pass || record fail
-  SUG_ID=$(cd apps/cos-runtime && npx tsx -e "
-import 'dotenv/config';
-import { applyCosRuntimeEnv } from './src/config/runtime-env.js';
-import { initSchema } from './src/graph/graph.db.js';
-import { identityId } from './src/graph/canonical-id.js';
-import { getEnv } from './src/config/env.js';
-import { backendGetNodesByType } from './src/graph/backend.js';
-applyCosRuntimeEnv();
-await initSchema();
-const owner = identityId(getEnv().COS_OWNER_EMAIL ?? '');
-const s = await backendGetNodesByType(owner, 'SuggestedResponse');
-const pending = s.find((n) => (n as { status?: string }).status === 'pending');
-console.log(pending?.canonicalId ?? s[0]?.canonicalId ?? '');
-" 2>/dev/null)
+  SUG_ID=$(cd apps/cos-runtime && npx tsx -e '(async()=>{const {applyCosRuntimeEnv}=await import("./src/config/runtime-env.js");const {initSchema}=await import("./src/graph/graph.db.js");const {identityId}=await import("./src/graph/canonical-id.js");const {getEnv}=await import("./src/config/env.js");const {backendGetNodesByType}=await import("./src/graph/backend.js");applyCosRuntimeEnv();await initSchema();const o=identityId(getEnv().COS_OWNER_EMAIL??"");const s=await backendGetNodesByType(o,"SuggestedResponse");const p=s.find((n)=>(n as {status?:string}).status==="pending");console.log(p?.canonicalId??s[0]?.canonicalId??"");})();' 2>/dev/null)
   if [[ -n "$SUG_ID" ]]; then
     run_cmd "reject suggestion" pnpm reject -- "$SUG_ID" --reject && record pass || record fail
   else
