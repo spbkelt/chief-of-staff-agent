@@ -12,8 +12,9 @@ function usage(): void {
 }
 
 async function run(): Promise<void> {
-  const args = process.argv.slice(2);
-  const isSnooze = process.argv[1]?.includes("snooze");
+  const args = process.argv.slice(2).filter((a) => a !== "--");
+  const isSnooze =
+    process.env["npm_lifecycle_event"] === "snooze" || args.includes("--hours");
 
   if (args.length === 0) {
     usage();

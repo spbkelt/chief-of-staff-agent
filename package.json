@@ -13,6 +13,7 @@
     "notify": "pnpm --filter ./apps/cos-runtime notify",
     "suggest": "pnpm --filter ./apps/cos-runtime suggest",
     "approve": "pnpm --filter ./apps/cos-runtime approve",
+    "reject": "pnpm --filter ./apps/cos-runtime reject",
     "inspect": "pnpm --filter ./apps/cos-runtime inspect",
     "validate": "pnpm --filter ./apps/cos-runtime validate",
     "demo": "pnpm --filter ./apps/cos-runtime demo",
