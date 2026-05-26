@@ -23,8 +23,8 @@ Core flow:
 ## Runtime Design
 
 - **Interface:** Cursor agent (`@bigboss`) + supporting CLI workflows
-- **Knowledge graph (phase 1):** libSQL local DB
-- **RAG:** local chunking + embedding + retrieval pipeline
+- **Knowledge graph:** libSQL `~/.cos/graph.db` (default); optional DynamoDB for graph nodes when `graphBackend: dynamo`
+- **RAG:** chunking + embedding + retrieval in `apps/cos-runtime/src/rag/*` — local-hash, libSQL vectors, or Bedrock + OpenSearch when configured
 - **LLM provider layer:** Vercel AI SDK (`ai`) only
   - Primary provider path: Bedrock
   - Secondary provider path: SDK-based fallback (no direct provider SDK usage in app code)
@@ -57,10 +57,11 @@ Developer → /arceus (routing) → team-kit skill + skills/build-cos-* overlay 
 
 | Track | Who | Graph | RAG | Proof |
 |-------|-----|-------|-----|-------|
-| **Local demo / Phase 1 product** | Operators + contributors | libSQL `~/.cos/graph.db` | `apps/cos-runtime/src/rag/*` (espeon / `build-local-rag-pocs` at build time) | `@bigboss` + live creds; `pnpm acceptance` (CI) |
-| **Customer production target** | Future hosted deploy | DynamoDB (see `lib/cos-stack.ts`) | OpenSearch + Bedrock per `/alakazam` + `build-rag-systems` | Separate gate—not claimed until AWS path is implemented |
+| **Local product (default)** | Operators + contributors | libSQL `~/.cos/graph.db` | Local-hash or Bedrock embed in libSQL; search in-process or via OpenSearch when configured | `@bigboss` + live creds; `pnpm acceptance` (CI) |
+| **AWS hybrid (optional)** | Operators with SSO | DynamoDB `cos-graph-dev` (nodes) + libSQL (chunks/edges) | Bedrock `cohere.embed-v4:0` + OpenSearch Serverless (`cos-vectors-dev`) | `./scripts/bootstrap-aws-cos.sh --write-config`; `pnpm validate` OpenSearch ping |
+| **Hosted scale-out** | Future | CDK `lib/cos-stack.ts`, Secrets Manager | Full `/alakazam` ingestion pipelines (S3/SQS/backfill) | Phase 2+ gate beyond bootstrap |
 
-Operators on the demo track need Bedrock (or configured LLM) for embeddings/LLM; they do **not** need OpenSearch or team-kit installed. See [docs/DEPLOYMENT.md](DEPLOYMENT.md) for AWS prerequisites when migrating.
+Bedrock (or another configured LLM) is required for semantic notify/suggest and for non–local-hash embeddings. OpenSearch and DynamoDB are **optional** — enable via setup or bootstrap. See [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ### Prototype ingestion budgets
 
@@ -82,9 +83,9 @@ Operators on the demo track need Bedrock (or configured LLM) for embeddings/LLM;
 
 ### Channel extensibility
 
-- Current phase focuses on in-Cursor delivery
-- Telegram delivery adapter is implemented; SMS/WhatsApp/X remain deferred under AC-13
-- Architecture remains open for adding channel adapters in later phases
+- `NotificationDeliveryAdapter` interface (console + Telegram implemented)
+- Connector registry documents SMS, WhatsApp, X as deferred **ingest** channels — no product stubs
+- Additional delivery adapters plug in via `notifications/delivery/resolve-adapters.ts`
 
 ## Team-kit alignment (audit @ `8e85bc1`)
 
@@ -94,14 +95,14 @@ Operators on the demo track need Bedrock (or configured LLM) for embeddings/LLM;
 
 | Agent | Applies to COS? | Mandate | COS status |
 |-------|-----------------|---------|------------|
-| **espeon** | Yes (demo RAG) | Local libSQL POC; `inspect`/`query` with **JSON stdout**; then AWS gate | **Partial** — tables + Bedrock embed OK; `query` human text today (target: JSON default) |
-| **alakazam** | Yes (customer RAG) | SAM + Docker OpenSearch + Bedrock; no alt prod vector DB | Documented; not product-default |
-| **oranguru** | Yes (notify) | Runtime data contract → score → deliver | Partial — pipeline in `notifications/*`; contract types planned |
-| **chatot** | Yes (suggest + delivery) | Delivery feedback + activity closure; no auto-send | Partial — Telegram + `recordActivity` on product CLIs |
-| **ash** | Boundary only | Asana **Lambda + Chat SDK** — not pull ingest | Correct — PAT pull in Phase 1; no webhook automation here |
-| **arceus** | Build-time only | Route contributors to skills | Never runtime |
-| **xatu** | Adapted | `ownerUserId` permission boundary | Enforced in retrieve + node writes |
-| **conkeldurr** | Adapted | Platform products (Persist, etc.) | libSQL POC; Neptune/Persist is production graph path |
+| **espeon** | Yes (demo RAG) | Local libSQL POC; `inspect`/`query`/`paths` with **JSON stdout**; optional AWS gate | **Implemented** — `rag_sources`/`rag_chunks`/`rag_links`; JSON CLI default; `AGENTS.md` contract |
+| **alakazam** | Yes (customer RAG) | OpenSearch + Bedrock; no alt prod vector DB | **Implemented (optional path)** — bootstrap + `migrate-aws-rag`; not required for local-hash demo |
+| **oranguru** | Yes (notify) | Runtime data contract → score → deliver | **Implemented** — `notifications/*`, rules, scoring, multi-channel delivery |
+| **chatot** | Yes (suggest + delivery) | Delivery feedback + activity closure; no auto-send | **Implemented** — suggest/approve/reject + `recordActivity`; outbound send intentionally absent |
+| **ash** | Boundary only | Asana **Lambda + Chat SDK** — not pull ingest | **Correct** — PAT pull in this repo; webhook automation via adapter in Phase 2+ |
+| **arceus** | Build-time only | Route contributors to skills | **Never runtime** |
+| **xatu** | Adapted | `ownerUserId` permission boundary | **Enforced** in retrieve, OpenSearch filter, and node writes |
+| **conkeldurr** | Adapted | Platform products (Persist, etc.) | **Hybrid** — libSQL prototype; DynamoDB + Persist/Neptune for scale-out |
 
 18 other kit agents (e.g. `kadabra`, `machamp`) are out of Chief of Staff Phase 1 scope. Pin: [external/soofi-team-kit.lock](../external/soofi-team-kit.lock).
 
@@ -112,7 +113,7 @@ Per [espeon.md](https://github.com/soofi-xyz/soofi-xyz-team-kit/blob/8e85bc148f5
 - **Source/chunk/link model:** `rag_sources`, `rag_chunks`, `rag_links` (populated on chunk via `CHUNK_OF`)
 - **Embeddings:** Vercel AI SDK — `local-hash` (demo) or Bedrock `cohere.embed-v4:0`
 - **CLI:** `pnpm inspect`, `pnpm query`, `pnpm paths` — **JSON stdout default**; `--format text` for humans; `RAG_DEBUG` on stderr
-- **AWS:** optional `COS_RAG_BACKEND=opensearch` — contributor path only; not the executive demo default
+- **AWS:** optional `COS_RAG_BACKEND=opensearch` via bootstrap — executive path when configured in `~/.cos/config.json`
 
 ## Team-Kit Automation Boundary
 
@@ -127,7 +128,7 @@ Before implementing any automation, route through team-kit first:
 |---|---|---|
 | Pull connector DI / OAuth patterns | `/arceus` → `build-cos-connectors` skill | COS implementation; `/ash` owns Asana Lambda automation path only |
 | Local RAG pattern | `/espeon` (`build-local-rag-pocs`) | COS overlay only |
-| Production RAG | `/alakazam` (`build-rag-systems`) | Deferred to Phase 2+ |
+| Production RAG | `/alakazam` (`build-rag-systems`) | Bootstrap + OpenSearch path shipped; full SAM/S3/backfill Phase 2+ |
 | Notification runtime/scoring | `/oranguru` (`assemble-communication-runtime`) | COS runs `pnpm notify` — not `/oranguru` at runtime |
 | Suggestion/comms lifecycle | `/chatot` (`manage-communication-activity`) | COS runs `pnpm suggest` / `approve` — not `/chatot` at runtime |
 | Permission boundaries | `/xatu` (`select-communication-audience`) | Enforce `ownerUserId`; no custom RBAC framework |
@@ -159,10 +160,10 @@ Before implementing any automation, route through team-kit first:
 
 ## Deferred / Future
 
-- SMS/WhatsApp/X delivery channels (Telegram proves extensibility; others Phase 3+)
-- External channel delivery adapters beyond Telegram
-- Hosted secret management and cloud-first runtime components
-- Production-scale graph and retrieval infrastructure — see DEPLOYMENT § Customer production prerequisites (AWS RAG)
+- SMS / WhatsApp / X **ingest** and full duplex messaging (adapter/registry extensibility in place)
+- Auto-send on any channel (by design — human approval gate only)
+- Hosted OAuth relay; org-wide Secrets Manager as default product path
+- Full `/alakazam` corpus backfill, webhooks, and staged rollout — see DEPLOYMENT
 
 ## Related Canonical Docs
 

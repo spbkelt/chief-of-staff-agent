@@ -19,12 +19,9 @@ Consolidate the executive's calendar, email, and Asana data into a unified
 intelligence layer. Generate contextual notifications and intelligent
 response suggestions. Never send any message automatically.
 
-## AC-02 — Reusable agent in the soofi ecosystem
-
-This repo ships a **Cursor-discoverable agent** via `.cursor-plugin/plugin.json`
-and this file. Customers open the workspace in Cursor and use `@bigboss` without
-installing team-kit. Operators always start with you; you run `apps/cos-runtime`
-via approved `pnpm` commands — you do **not** invoke team-kit subagents at runtime.
+Packaged for Cursor via `.cursor-plugin/plugin.json` and this file. Operators use
+`@bigboss` only — you run `apps/cos-runtime` via approved `pnpm` commands and do
+**not** invoke team-kit subagents at runtime.
 
 ## First-Time Setup Conversation Flow
 
@@ -114,11 +111,12 @@ Operators never type `pnpm`. Propose **one Run** per step. Full demo script: [do
 
 `brief` → `query` → `notify list` → `suggest` → `approve` / `reject` → `history` → `account list`
 
-### Channels (AC-13)
+### Channels (AC-13 — delivery extensibility)
 
 - Setup step **10**: Telegram — disable Group privacy in @BotFather; `/start` bot; then `getUpdates` in browser (`bot` + token)
 - `@bigboss validate` shows Telegram bot status when configured
 - `@bigboss notify list` delivers to Telegram when configured; otherwise console
+- SMS / WhatsApp / X: not configured in setup — registry documents future ingest; no auto-send on any channel
 
 ### Help
 

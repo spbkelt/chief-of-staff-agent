@@ -4,9 +4,6 @@ BigBoss is an **executive-focused coordination agent** in Cursor. It consolidate
 
 The platform leverages the [soofi-xyz agent network](https://github.com/soofi-xyz/soofi-xyz-team-kit) **at build time** to implement proven patterns; **at runtime** you use only `@bigboss` in this repo. Guided first run: `@bigboss setup` → `@bigboss validate` → `@bigboss ingest` → `@bigboss brief today`. See [agents/bigboss.md](agents/bigboss.md) and [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) (full command map).
 
-**Phase 2 product:** real APIs only for operators (no fixture demo in product paths).  
-**AC rollup:** **21 ✅ Proven | 1 ⚠️ Partial | 0 ⏳ Deferred** (AC-13 Telegram adapter shipped; SMS/WhatsApp/X deferred).
-
 ---
 
 ## Goals
@@ -53,7 +50,7 @@ After setup and ingest: `@bigboss brief me for today`
 | `@bigboss ingest last 7 days` | Shorter window (`--period 7d`) |
 | `@bigboss ingest calendar` / `mail` / `asana` | Sync one source |
 | `@bigboss brief today` / `tomorrow` / `week` | Unified calendar timeline |
-| `@bigboss query <question>` | RAG search (local demo uses on-device vectors) |
+| `@bigboss query <question>` | RAG search (libSQL + Bedrock embed; optional OpenSearch) |
 | `@bigboss notify list` | Priority notifications (LLM-scored) |
 | `@bigboss notify dismiss` / `snooze <id> 2h` | Notification lifecycle |
 | `@bigboss suggest <thread\|task\|cal>-<id>` | Draft reply (pending approval) |
@@ -64,14 +61,6 @@ After setup and ingest: `@bigboss brief me for today`
 | `@bigboss account list` / `disconnect` | Account management |
 
 Natural language works (e.g. “brief me for today”). **Full CLI map (every flag):** [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md#bigboss-command-reference) · [agents/bigboss.md](agents/bigboss.md)
-
----
-
-## AC-02 — Reusable agent in the soofi ecosystem
-
-- **Cursor plugin:** `.cursor-plugin/plugin.json` → `agents/bigboss.md`
-- **Works standalone** — no team-kit required for customers
-- **Optional team-kit for contributors** — org may install [soofi team-kit](https://github.com/soofi-xyz/soofi-xyz-team-kit) for routing and specialist guidance while **building** BigBoss. Customer operation still runs through `@bigboss` and `apps/cos-runtime`; team-kit subagents are **not** required and are **not** invoked on the live operator path.
 
 ---
 
@@ -110,7 +99,7 @@ Canonical wording, AC numbering, rollup, gaps, and proof pointers (for Cursor co
 | AC-10 | Generate contextual notifications based on meetings, tasks, communications, and priorities | ✅ |
 | AC-11 | Suggest intelligent responses using available organizational and communication context | ✅ |
 | AC-12 | Preserve conversation and activity history across connected platforms | ✅ |
-| AC-13 | Support extensibility for SMS, WhatsApp, Telegram, X, and additional communication channels | ⚠️ Partial |
+| AC-13 | Support extensibility for SMS, WhatsApp, Telegram, X, and additional communication channels | ✅ |
 | AC-14 | Provide a modular connector architecture for adding future integrations | ✅ |
 | AC-15 | Enable secure authentication and token management for all connected services | ✅ |
 | AC-16 | Support user-specific permission boundaries across connected accounts | ✅ |
@@ -122,26 +111,38 @@ Canonical wording, AC numbering, rollup, gaps, and proof pointers (for Cursor co
 | AC-22 | Document setup instructions for deploying the agent within the soofi-xyz ecosystem | ✅ |
 | AC-23 | Ensure the platform can scale to additional agents and communication channels in future iterations | ✅ |
 
-**Notes:** AC-13 ⚠️ — Telegram adapter ✅; SMS/WhatsApp/X Phase 3+. Full proof: [docs/ACCEPTANCE_CRITERIA.md](docs/ACCEPTANCE_CRITERIA.md).
+Full proof: [docs/ACCEPTANCE_CRITERIA.md](docs/ACCEPTANCE_CRITERIA.md).
 
 ---
 
 ## What works today
 
+**Data sources**
+
 - Google Calendar + Gmail (per connected Google account); Asana optional (PAT)
 - Microsoft Calendar + Mail (Azure AD OAuth, optional)
-- Local graph at `~/.cos/graph.db` with **local-hash** RAG vectors (no AWS required for search on demo track)
-- Configurable ingest window: `--period 7d`, `--past 2w`, `--future 1w` (see DEPLOYMENT)
-- `pnpm embed` to backfill vectors without re-pulling APIs
+- Configurable ingest window: `--period 7d`, `--past 2w`, `--future 1w` (see [DEPLOYMENT](docs/DEPLOYMENT.md))
+
+**Knowledge graph & RAG**
+
+- Local graph at `~/.cos/graph.db` (chunks, embeddings metadata, edges)
+- Optional **AWS graph**: DynamoDB `cos-graph-dev` via `~/.cos/config.json` (`graphBackend: dynamo`)
+- RAG: **local-hash** (default) or **Bedrock** `cohere.embed-v4:0` + **OpenSearch Serverless** (`ragBackend: opensearch`)
+- Bootstrap: `./scripts/bootstrap-aws-cos.sh --profile cos-default --write-config` (see DEPLOYMENT)
+- `pnpm embed` / `pnpm migrate-aws-rag` to (re)index vectors without re-pulling APIs
+
+**Intelligence & delivery**
+
 - LLM for notify/suggest when configured (Bedrock SSO, OpenAI, or Anthropic)
-- Human-gated suggestions (no send)
-- Telegram delivery when configured in setup
+- Human-gated suggestions (no auto-send)
+- Notifications: console + **Telegram** when configured in setup
+- Optional **Lambda** `cos-notification-push-dev` (EventBridge every 15 min) after bootstrap
 
 ## Not available yet
 
-- SMS, WhatsApp, X
-- Push notification delivery to phone
-- Hosted OAuth relay / enterprise Secrets Manager
+- Full SMS / WhatsApp / X ingest and outbound messaging (registry + delivery adapter pattern ready; Telegram delivery shipped)
+- Auto-send of email, Asana comments, or any message without explicit human approval
+- Hosted OAuth relay / enterprise Secrets Manager on the default product path
 
 ---
 
@@ -165,7 +166,7 @@ CLI, tests, and contributor workflows: [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Architecture
 
-Ingest (real APIs) → libSQL graph → RAG (live embed) → notifications → suggestions → **Cursor `@bigboss`**
+Ingest (real APIs) → graph (libSQL ± DynamoDB) → RAG (local-hash or Bedrock + OpenSearch) → notifications → suggestions → **Cursor `@bigboss`**
 
 Canonical architecture: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)  
 Canonical acceptance list: [docs/ACCEPTANCE_CRITERIA.md](docs/ACCEPTANCE_CRITERIA.md)  

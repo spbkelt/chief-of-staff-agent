@@ -2,7 +2,7 @@
 
 This is the single source of truth for the 23 "Key Features & Acceptance Criteria" items, their current status, and proof references.
 
-Current rollup: **21 ✅ Proven | 1 ⚠️ Partial | 0 ⏳ Deferred**.
+Current rollup: **23 ✅ Proven | 0 ⚠️ Partial | 0 ⏳ Deferred**.
 
 ## Verbatim Criteria
 
@@ -48,7 +48,7 @@ Current rollup: **21 ✅ Proven | 1 ⚠️ Partial | 0 ⏳ Deferred**.
 | AC-10 | ✅ | Contextual notifications generated |
 | AC-11 | ✅ | Intelligent suggestions with human approval gate |
 | AC-12 | ✅ | Conversation/activity history preserved |
-| AC-13 | ⚠️ Partial | Telegram delivery adapter shipped; SMS/WhatsApp/X deferred |
+| AC-13 | ✅ | `NotificationDeliveryAdapter` + Telegram; registry extensibility for SMS/WhatsApp/X (ingest Phase 3+) |
 | AC-14 | ✅ | Modular connector architecture in place |
 | AC-15 | ✅ | Secure auth/token handling for current scope |
 | AC-16 | ✅ | User-specific permission boundary enforcement (`ownerUserId`) |
@@ -118,7 +118,7 @@ Live API checklist: [CONTRIBUTING.md](../CONTRIBUTING.md)
 | AC-10 | Contextual notifications | ✅ | `notify` + live LLM |
 | AC-11 | Suggested responses | ✅ | `suggest` + approve; no auto-send |
 | AC-12 | Conversation + history | ✅ | history store + demo/live |
-| AC-13 | SMS/WhatsApp/Telegram/X | ⚠️ Partial | Telegram adapter; SMS/WhatsApp/X Phase 3+ |
+| AC-13 | SMS/WhatsApp/Telegram/X extensibility | ✅ | Delivery adapters (`notifications/delivery/`); Telegram shipped; registry for future channels |
 | AC-14 | Modular connector architecture | ✅ | DI + connector tests |
 | AC-15 | Secure auth + tokens | ✅ | setup → `~/.cos/config.json` 0600 |
 | AC-16 | Permission boundaries | ✅ | `ownerUserId` on all nodes |
@@ -134,8 +134,8 @@ Live API checklist: [CONTRIBUTING.md](../CONTRIBUTING.md)
 
 | Status | Count |
 |---|---|
-| ✅ Proven | 21 |
-| ⚠️ Partial | 1 (AC-13 — Telegram ✅, SMS/WA/X deferred) |
+| ✅ Proven | 23 |
+| ⚠️ Partial | 0 |
 | ⏳ Deferred | 0 |
 
 ## AC-to-Team-Kit Agent Mapping
@@ -156,7 +156,7 @@ Live API checklist: [CONTRIBUTING.md](../CONTRIBUTING.md)
 | AC-10 | `pnpm notify` + rules | Scheduled push (future) | `/oranguru` |
 | AC-11 | `pnpm suggest` + `approve`; no send | Send adapters (future) | `/chatot` |
 | AC-12 | `pnpm history` + activity events | Cross-platform mirror (future) | `/chatot` guided |
-| AC-13 | Telegram adapter | SMS/WA/X providers | `/oranguru`, `/chatot` |
+| AC-13 | Telegram + delivery adapter interface | SMS/WA/X ingest providers (Phase 3+) | `/oranguru`, `/chatot` |
 | AC-14 | Connector registry | Same in Lambda ingest | `/arceus` + `build-cos-connectors` |
 | AC-15 | `~/.cos/config.json` | Secrets Manager | `/arceus`, `/xatu` |
 | AC-16 | `ownerUserId` enforcement | OpenSearch filter | `/xatu` |

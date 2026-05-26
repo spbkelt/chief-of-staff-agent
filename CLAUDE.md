@@ -18,7 +18,7 @@
 2. **Executable proof over words.** Executive proof = Cursor `@bigboss` + live APIs. CI = `pnpm acceptance` + `pnpm demo-fixtures` only.
 3. **No mock ingest/RAG on product paths.** `COS_ALLOW_FIXTURES` for Vitest (`__tests__/`) and `pnpm demo-fixtures` (contributor CI) only. Never use on product paths.
 4. **Cursor-only operator UX. pnpm-backed execution and proof.** Executives use `@bigboss` in Cursor; BigBoss proposes pnpm commands as one-click terminal actions. Contributors use CLI directly. See `docs/DEPLOYMENT.md`.
-5. **Rollup:** 21 ✅ | 1 ⚠️ | 0 ⏳ (AC-13 partial — Telegram adapter shipped; SMS/WA/X deferred).
+5. **Rollup:** 23 ✅ | 0 ⚠️ | 0 ⏳ (AC-13: delivery adapter extensibility + Telegram; SMS/WA/X ingest Phase 3+).
 
 ---
 

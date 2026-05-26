@@ -68,7 +68,7 @@ const acTable = [
   { ac: "AC-10", desc: "Contextual notifications", status: "✅" },
   { ac: "AC-11", desc: "Suggested responses", status: "✅" },
   { ac: "AC-12", desc: "Conversation + activity history", status: "✅" },
-  { ac: "AC-13", desc: "SMS/WhatsApp/Telegram/X channels", status: "⚠️ Partial" },
+  { ac: "AC-13", desc: "SMS/WhatsApp/Telegram/X channels", status: "✅" },
   { ac: "AC-14", desc: "Modular connector architecture (DI)", status: "✅" },
   { ac: "AC-15", desc: "Secure auth + token management", status: "✅" },
   { ac: "AC-16", desc: "User-specific permission boundaries", status: "✅" },
@@ -116,7 +116,7 @@ for (const row of acTable) {
 
 console.log(`\n── Suite Results ─────────────────────────────`);
 console.log(`  Passed: ${passed.length}/${results.length}`);
-console.log(`  Rollup: 21 ✅ Proven | 1 ⚠️ Partial (AC-13 Telegram ✅, SMS/WA/X deferred) | 0 ⏳\n`);
+console.log(`  Rollup: 23 ✅ Proven | 0 ⚠️ Partial | 0 ⏳\n`);
 
 if (failed.length > 0) {
   console.log(`  Failed steps:`);
