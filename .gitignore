@@ -1,0 +1,36 @@
+# credentials — never commit
+.env
+
+# databases
+*.db
+*.db-shm
+*.db-wal
+
+# build output
+dist/
+.turbo/
+
+# dependencies
+node_modules/
+
+# Python
+__pycache__/
+*.pyc
+
+# TypeScript
+*.tsbuildinfo
+
+# OS
+.DS_Store
+
+# local-only project memory
+MEMORY.md
+
+# archived docs (local historical reference only)
+docs/archived/
+
+# local-only infra helpers (not versioned)
+scripts/infra/
+
+# test runner cache
+apps/cos-runtime/node_modules/.vite/
