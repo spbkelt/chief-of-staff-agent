@@ -1,0 +1,27 @@
+{
+  "name": "soofi-xyz-team-kit",
+  "repo": "https://github.com/soofi-xyz/soofi-xyz-team-kit",
+  "cursorPluginPath": "~/.cursor/plugins/local/soofi-xyz",
+  "installedVia": "scripts/setup-soofi-plugin.sh",
+  "requiredFor": "contributor development only — customer runtime (pnpm acceptance) does not require team-kit",
+  "testedCommit": "8e85bc148f5a8c101c135f3cb72a4cfcab176126",
+  "requiredAgents": [
+    "arceus",
+    "ash",
+    "espeon",
+    "alakazam",
+    "chatot",
+    "xatu",
+    "oranguru",
+    "conkeldurr"
+  ],
+  "requiredSkills": [
+    "apply-engineering-guidelines",
+    "build-ai-agents",
+    "build-local-rag-pocs",
+    "build-rag-systems",
+    "manage-communication-activity",
+    "assemble-communication-runtime",
+    "select-communication-audience"
+  ]
+}

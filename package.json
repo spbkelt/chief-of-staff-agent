@@ -1,0 +1,32 @@
+{
+  "name": "chief-of-staff-agent",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "pnpm --filter ./apps/cos-runtime build",
+    "test": "pnpm --filter ./apps/cos-runtime test",
+    "ingest": "pnpm --filter ./apps/cos-runtime ingest",
+    "embed": "pnpm --filter ./apps/cos-runtime embed",
+    "migrate-aws-rag": "pnpm --filter ./apps/cos-runtime migrate-aws-rag",
+    "query": "pnpm --filter ./apps/cos-runtime query",
+    "paths": "pnpm --filter ./apps/cos-runtime paths",
+    "notify": "pnpm --filter ./apps/cos-runtime notify",
+    "suggest": "pnpm --filter ./apps/cos-runtime suggest",
+    "approve": "pnpm --filter ./apps/cos-runtime approve",
+    "inspect": "pnpm --filter ./apps/cos-runtime inspect",
+    "validate": "pnpm --filter ./apps/cos-runtime validate",
+    "demo": "pnpm --filter ./apps/cos-runtime demo",
+    "demo-fixtures": "pnpm --filter ./apps/cos-runtime demo-fixtures",
+    "brief": "pnpm --filter ./apps/cos-runtime brief",
+    "clean": "pnpm --filter ./apps/cos-runtime clean",
+    "acceptance": "pnpm --filter ./apps/cos-runtime acceptance",
+    "setup": "pnpm --filter ./apps/cos-runtime run setup",
+    "dismiss": "pnpm --filter ./apps/cos-runtime dismiss",
+    "snooze": "pnpm --filter ./apps/cos-runtime snooze",
+    "history": "pnpm --filter ./apps/cos-runtime history",
+    "disconnect": "pnpm --filter ./apps/cos-runtime disconnect",
+    "account": "pnpm --filter ./apps/cos-runtime account",
+    "setup-soofi-plugin": "bash scripts/setup-soofi-plugin.sh",
+    "verify-soofi-plugin": "bash scripts/verify-soofi-plugin.sh"
+  }
+}

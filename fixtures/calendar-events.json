@@ -1,0 +1,53 @@
+[
+  {
+    "providerEventId": "evt_boardreview_001",
+    "title": "Board Review — Q2 Results",
+    "description": "Quarterly board presentation. Review Q2 financials, roadmap update, and growth metrics. Deck due 24h before.",
+    "startAt": "2026-05-27T14:00:00Z",
+    "endAt": "2026-05-27T16:00:00Z",
+    "isAllDay": false,
+    "location": "Conference Room A / Zoom",
+    "status": "confirmed",
+    "organizerEmail": "sarah.chen@prismteam.ai",
+    "attendeeEmails": [
+      "exec@prismteam.ai",
+      "sarah.chen@prismteam.ai",
+      "james.wilson@prismteam.ai",
+      "board@investors.vc"
+    ],
+    "meetingUrl": "https://zoom.us/j/demo-123"
+  },
+  {
+    "providerEventId": "evt_budget_sync_002",
+    "title": "Q3 Budget Planning Sync",
+    "description": "Review budget allocations for Q3. Agenda: headcount requests, software renewals, marketing spend.",
+    "startAt": "2026-05-26T10:00:00Z",
+    "endAt": "2026-05-26T11:00:00Z",
+    "isAllDay": false,
+    "location": null,
+    "status": "confirmed",
+    "organizerEmail": "exec@prismteam.ai",
+    "attendeeEmails": [
+      "exec@prismteam.ai",
+      "james.wilson@prismteam.ai",
+      "finance@prismteam.ai"
+    ],
+    "meetingUrl": "https://meet.google.com/demo-456"
+  },
+  {
+    "providerEventId": "evt_hiring_debrief_003",
+    "title": "Hiring Debrief — VP Engineering Candidates",
+    "description": "Debrief on 3 final VP Engineering candidates. Voting and next steps.",
+    "startAt": "2026-05-26T15:30:00Z",
+    "endAt": "2026-05-26T16:30:00Z",
+    "isAllDay": false,
+    "location": null,
+    "status": "confirmed",
+    "organizerEmail": "sarah.chen@prismteam.ai",
+    "attendeeEmails": [
+      "exec@prismteam.ai",
+      "sarah.chen@prismteam.ai"
+    ],
+    "meetingUrl": null
+  }
+]

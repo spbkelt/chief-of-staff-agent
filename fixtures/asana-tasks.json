@@ -1,0 +1,85 @@
+{
+  "workspace": {
+    "providerWorkspaceGid": "ws_prismteam_001",
+    "name": "Prism Team",
+    "isOrganization": true
+  },
+  "projects": [
+    {
+      "providerProjectGid": "proj_q3_roadmap_001",
+      "name": "Q3 Roadmap",
+      "color": "blue",
+      "isArchived": false,
+      "dueDate": "2026-09-30"
+    },
+    {
+      "providerProjectGid": "proj_board_prep_002",
+      "name": "Board Meeting Prep",
+      "color": "red",
+      "isArchived": false,
+      "dueDate": "2026-05-27"
+    }
+  ],
+  "tasks": [
+    {
+      "providerTaskGid": "task_q3_headcount_001",
+      "projectGid": "proj_q3_roadmap_001",
+      "name": "Q3 headcount approval — 3 engineers",
+      "notes": "James submitted Q3 headcount request for 3 additional backend engineers. Total cost: $450K/year. Requires exec sign-off before board meeting on May 27th. Finance deadline: May 24th EOD.",
+      "assigneeEmail": "exec@prismteam.ai",
+      "followerEmails": ["james.wilson@prismteam.ai", "finance@prismteam.ai"],
+      "dueDate": "2026-05-24",
+      "dueAt": "2026-05-24T23:59:00Z",
+      "isCompleted": false,
+      "completedAt": null,
+      "priority": "high",
+      "tags": ["Q3", "headcount", "budget", "board-prep"],
+      "comments": [
+        {
+          "providerStoryGid": "story_001a",
+          "authorEmail": "james.wilson@prismteam.ai",
+          "text": "Attached the breakdown by role: 2x Senior Backend Engineers, 1x Staff Engineer. Comp data from levels.fyi included.",
+          "createdAt": "2026-05-22T10:00:00Z",
+          "isSystem": false
+        },
+        {
+          "providerStoryGid": "story_001b",
+          "authorEmail": "finance@prismteam.ai",
+          "text": "Finance confirmed: approval needed before EOD May 24th to include in board package.",
+          "createdAt": "2026-05-23T15:30:00Z",
+          "isSystem": false
+        }
+      ]
+    },
+    {
+      "providerTaskGid": "task_board_deck_review_002",
+      "projectGid": "proj_board_prep_002",
+      "name": "Review board deck slides 12-18 and roadmap section",
+      "notes": "Sarah needs review comments on Q2 metrics (slides 12-18) and the roadmap section. Deck is in the shared Drive folder. Board meeting: May 27th.",
+      "assigneeEmail": "exec@prismteam.ai",
+      "followerEmails": ["sarah.chen@prismteam.ai"],
+      "dueDate": "2026-05-26",
+      "dueAt": "2026-05-26T23:59:00Z",
+      "isCompleted": false,
+      "completedAt": null,
+      "priority": "high",
+      "tags": ["board-prep", "Q2-review"],
+      "comments": []
+    },
+    {
+      "providerTaskGid": "task_acme_partnership_003",
+      "projectGid": "proj_q3_roadmap_001",
+      "name": "Evaluate Acme Corp integration partnership proposal",
+      "notes": "Acme CTO reached out about a data integration partnership — platform metrics in exchange for API access. Need to decide: connect with technical lead for scoping or decline. Response overdue.",
+      "assigneeEmail": "exec@prismteam.ai",
+      "followerEmails": [],
+      "dueDate": "2026-05-23",
+      "dueAt": "2026-05-23T23:59:00Z",
+      "isCompleted": false,
+      "completedAt": null,
+      "priority": "medium",
+      "tags": ["partnerships", "business-development"],
+      "comments": []
+    }
+  ]
+}

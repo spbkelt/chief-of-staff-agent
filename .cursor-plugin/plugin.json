@@ -1,0 +1,11 @@
+{
+  "name": "chief-of-staff-agent",
+  "description": "Cursor-first Chief of Staff (BigBoss): real Google Calendar, Gmail, and Asana in a local knowledge graph; contextual notifications and human-gated suggestions. Primary interface @bigboss in chat — no fixture mode for executives.",
+  "version": "0.2.0",
+  "author": {
+    "name": "Prism Team AI"
+  },
+  "keywords": ["cursor", "agents", "chief-of-staff", "rag", "knowledge-graph", "calendar", "email", "asana", "executive"],
+  "agents": "./agents/",
+  "skills": "./skills/"
+}

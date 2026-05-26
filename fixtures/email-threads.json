@@ -1,0 +1,98 @@
+[
+  {
+    "providerThreadId": "thread_q3_budget_001",
+    "subject": "Q3 Budget — headcount request approval needed",
+    "firstMessageAt": "2026-05-22T09:14:00Z",
+    "lastMessageAt": "2026-05-24T17:45:00Z",
+    "participantEmails": [
+      "james.wilson@prismteam.ai",
+      "exec@prismteam.ai",
+      "finance@prismteam.ai"
+    ],
+    "labels": ["INBOX"],
+    "isResolved": false,
+    "replyNeeded": true,
+    "messages": [
+      {
+        "providerMessageId": "msg_001a",
+        "fromEmail": "james.wilson@prismteam.ai",
+        "toEmails": ["exec@prismteam.ai"],
+        "ccEmails": ["finance@prismteam.ai"],
+        "sentAt": "2026-05-22T09:14:00Z",
+        "bodyText": "Hi, I've submitted the Q3 headcount request for 3 additional engineers. Can you approve before the board meeting on the 27th? Finance needs sign-off by EOD Friday the 24th.",
+        "hasAttachments": false,
+        "labels": ["INBOX"]
+      },
+      {
+        "providerMessageId": "msg_001b",
+        "fromEmail": "finance@prismteam.ai",
+        "toEmails": ["exec@prismteam.ai", "james.wilson@prismteam.ai"],
+        "ccEmails": [],
+        "sentAt": "2026-05-24T17:45:00Z",
+        "bodyText": "Reminder: we need approval on this today to include in the board package. James submitted the full breakdown in Asana task #q3-headcount.",
+        "hasAttachments": false,
+        "labels": ["INBOX"]
+      }
+    ]
+  },
+  {
+    "providerThreadId": "thread_partnership_002",
+    "subject": "Partnership proposal — Acme Corp integration",
+    "firstMessageAt": "2026-05-20T14:30:00Z",
+    "lastMessageAt": "2026-05-23T11:00:00Z",
+    "participantEmails": [
+      "cto@acmecorp.com",
+      "exec@prismteam.ai"
+    ],
+    "labels": ["INBOX", "IMPORTANT"],
+    "isResolved": false,
+    "replyNeeded": true,
+    "messages": [
+      {
+        "providerMessageId": "msg_002a",
+        "fromEmail": "cto@acmecorp.com",
+        "toEmails": ["exec@prismteam.ai"],
+        "ccEmails": [],
+        "sentAt": "2026-05-20T14:30:00Z",
+        "bodyText": "Following up on our call — Acme Corp would like to formally propose a data integration partnership. We'd share platform metrics in exchange for API access. Can you connect me with your technical lead for scoping?",
+        "hasAttachments": false,
+        "labels": ["INBOX"]
+      },
+      {
+        "providerMessageId": "msg_002b",
+        "fromEmail": "cto@acmecorp.com",
+        "toEmails": ["exec@prismteam.ai"],
+        "ccEmails": [],
+        "sentAt": "2026-05-23T11:00:00Z",
+        "bodyText": "Just following up — happy to jump on a 30-min call this week to discuss. Let me know what works.",
+        "hasAttachments": false,
+        "labels": ["INBOX"]
+      }
+    ]
+  },
+  {
+    "providerThreadId": "thread_board_deck_003",
+    "subject": "Board deck — review by EOD Thursday",
+    "firstMessageAt": "2026-05-25T08:00:00Z",
+    "lastMessageAt": "2026-05-25T08:00:00Z",
+    "participantEmails": [
+      "sarah.chen@prismteam.ai",
+      "exec@prismteam.ai"
+    ],
+    "labels": ["INBOX", "IMPORTANT"],
+    "isResolved": false,
+    "replyNeeded": false,
+    "messages": [
+      {
+        "providerMessageId": "msg_003a",
+        "fromEmail": "sarah.chen@prismteam.ai",
+        "toEmails": ["exec@prismteam.ai"],
+        "ccEmails": [],
+        "sentAt": "2026-05-25T08:00:00Z",
+        "bodyText": "I've shared the board deck draft in the shared Drive folder. Please review slides 12-18 (Q2 metrics) and the roadmap section. I need your final comments by EOD Thursday — board meeting is Wednesday the 27th.",
+        "hasAttachments": true,
+        "labels": ["INBOX"]
+      }
+    ]
+  }
+]

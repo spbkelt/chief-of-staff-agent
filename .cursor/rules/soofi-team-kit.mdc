@@ -1,0 +1,20 @@
+---
+description: Enforce soofi team-kit plugin — routing, no vendoring, parent-skill loading order
+---
+
+Before implementation: `pnpm verify-soofi-plugin` (contributors).
+
+**Compose before implementing.** Before writing automation/capability code, verify whether a hosted team-kit agent already owns the pattern. Route to that specialist and compose, do not duplicate.
+
+Route through `/arceus` or `@arceus` for ambiguous tasks. Specialist usage context is documented in `docs/ARCHITECTURE.md`.
+
+**Executives** use `@bigboss` only — team-kit subagents are **not** invoked on the operator path. Suggest `/arceus` or specialists only to **contributors** implementing features in `apps/cos-runtime`. See `docs/ARCHITECTURE.md` § Runtime vs build-time.
+
+Skill order: team-kit parent → COS overlay `skills/build-cos-*/SKILL.md`.
+
+Do NOT copy vendor team-kit into this repo.  
+Do NOT mark AC complete on fixture/mock product data.  
+Do NOT use ash Asana `onNewMention` trigger for Phase 1 pull ingest.
+Asana automation paths (webhooks, event triggers, comment-driven actions) must use [`chat-adapter-asana`](https://github.com/soofi-xyz/chat-adapter-asana). Do not build custom Asana webhook automation in this repo.
+
+Product ingest/RAG: **live APIs only** unless `COS_ALLOW_FIXTURES=true` (CI).
