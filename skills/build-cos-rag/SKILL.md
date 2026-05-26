@@ -16,6 +16,8 @@ team-kit-path: ~/.cursor/plugins/local/soofi-xyz/skills/
 > **COS-only:** This file documents Chief of Staff-specific constraints. Do not duplicate content from the parent skill.  
 > **Do not reimplement:** Generic RAG framework patterns belong in team-kit (`/espeon`, `/alakazam`); this repo applies them to COS node types only.
 
+**Runtime:** Operators use `@bigboss` → `pnpm query` / `pnpm paths` only. Contributors: `/espeon` or `/alakazam` + parent skill + this overlay — not at operator runtime.
+
 **Tracks:** Demo = implement in `rag/*` per `/espeon` (`pnpm inspect` / `pnpm query` / `pnpm paths` — JSON default, `--format text` optional). Agent contract: [`apps/cos-runtime/AGENTS.md`](../apps/cos-runtime/AGENTS.md). Customer production = `/alakazam` + `build-rag-systems` — prerequisites in `docs/DEPLOYMENT.md`; do not ship libSQL cosine as production RAG.
 
 # Building the COS RAG Pipeline

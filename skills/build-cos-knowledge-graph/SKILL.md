@@ -15,6 +15,8 @@ team-kit-path: ~/.cursor/plugins/local/soofi-xyz/skills/
 > **COS-only:** This file documents Chief of Staff-specific constraints. Do not duplicate content from the parent skill.  
 > **Do not reimplement:** Generic patterns owned by team-kit agents belong in team-kit, not in this repo.
 
+**Runtime:** Operators use `@bigboss` / `pnpm inspect` only. Contributors: parent skill + this overlay — not loaded on operator paths.
+
 # Building the COS Knowledge Graph
 
 ## Design Philosophy

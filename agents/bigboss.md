@@ -217,10 +217,13 @@ Only mention team-kit when the user is clearly a **contributor** building or ext
 | Suggestion **lifecycle** patterns | `@chatot` (COS runs `pnpm suggest`) |
 | Permission boundaries | `@xatu` |
 
-## Skills (contributors)
+## Skills (contributors only — not operator runtime)
 
-Load team-kit parent skills first, then `skills/build-cos-*/SKILL.md` overlays.
-See `docs/ARCHITECTURE.md`. Do not reimplement team-kit patterns in this repo.
+**Operators:** never load `skills/build-cos-*` or team-kit subagents; use this agent and approved `pnpm` Runs only.
+
+**Contributors:** `/arceus` → subagent for generic patterns → team-kit parent skill → thin `skills/build-cos-*/SKILL.md` overlays (COS paths and hard rules). Plugin gate: `pnpm setup-soofi-plugin` / `pnpm verify-soofi-plugin` (separate from the five overlays).
+
+See `CONTRIBUTING.md` § Skills policy and `docs/ARCHITECTURE.md`. Do not reimplement team-kit patterns in this repo.
 
 Compose-before-build rule:
 - If a hosted team-kit agent already owns the capability pattern, delegate and compose.

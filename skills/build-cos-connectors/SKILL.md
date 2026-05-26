@@ -16,6 +16,8 @@ team-kit-path: ~/.cursor/plugins/local/soofi-xyz/skills/
 > **COS-only:** This file documents Chief of Staff-specific constraints. Do not duplicate content from the parent skill.  
 > **Do not reimplement:** Generic patterns owned by team-kit agents belong in team-kit, not in this repo.
 
+**Runtime:** Operators use `@bigboss` → `pnpm ingest` only. Contributors: `/arceus` → parent skill + this overlay — not loaded on operator paths.
+
 # Building COS Connectors
 
 **Product:** real GCal/Gmail/Asana/MsCal/MsMail — `build-connectors.ts`, multi `googleAccounts` + `microsoftAccounts`. No fake stubs. Fixture ingest: `COS_ALLOW_FIXTURES` + `demo-fixtures` (CI).
