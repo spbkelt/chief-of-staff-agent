@@ -62,7 +62,7 @@ Current rollup: **21 ✅ Proven | 1 ⚠️ Partial | 0 ⏳ Deferred**.
 
 ## Proof References
 
-- Architecture and extensibility: `docs/ARCHITECTURE.md`
+- Architecture, team-kit agent audit, Espeon CLI: `docs/ARCHITECTURE.md`
 - Setup/deployment instructions: `docs/DEPLOYMENT.md`
 - Contributor commands and live API checklist: `CONTRIBUTING.md`
 
@@ -192,6 +192,40 @@ Live API checklist: [CONTRIBUTING.md](../CONTRIBUTING.md)
 | AC-21 | all specialists via `/arceus` | routing/advisory | End-to-end demo stitches multiple owned patterns |
 | AC-22 | `/arceus` | routing/advisory | Documentation and operator guidance alignment |
 | AC-23 | `/conkeldurr`, `/arceus` | routing/advisory | Scalability path depends on modular product boundaries |
+
+## Team-Kit Module Alignment
+
+How each `apps/cos-runtime` module maps to the soofi team-kit parent skill, current fidelity, and AWS production target. **Principle:** runtime is custom TypeScript; AWS is the production substrate per team-kit specs. All LLM/embedding calls use the Vercel AI SDK (`ai` package).
+
+| cos-runtime module | Team-kit parent skill | Current implementation | AWS production target |
+|---|---|---|---|
+| `connectors/` (gcal, gmail, asana, ms-calendar, ms-mail) | `build-cos-connectors` → `build-ai-agents` | libSQL connector registry + DI; live Google/Microsoft/Asana APIs | Same; connector secrets → AWS Secrets Manager (`/{stage}/cos/{userId}/{connectorId}`) |
+| `graph/` (libSQL) | `build-cos-knowledge-graph` → `build-ai-agents` | libSQL single-table (`~/.cos/graph.db`); rawHash dedup; upsertNode/getNode | `graph/dynamo-store.ts` — DynamoDB single-table (pk=canonicalId, sk=nodeType, GSI ownerUserId+nodeType) |
+| `rag/embed.ts` + local retrieve | `build-cos-rag` → `build-local-rag-pocs` | libSQL rag_chunks; Vercel AI SDK `embed()`; cohere.embed-v4:0 (1024 dims) | `rag/opensearch-store.ts` — OpenSearch Serverless knn_vector (1024 dims); SigV4 auth |
+| `llm/provider.ts` | `build-cos-rag` → `build-rag-systems` | Vercel AI SDK: Bedrock (SSO or keys), OpenAI, Anthropic+OpenAI-embed | Same; `COS_RAG_BACKEND=opensearch` switches retrieval to OpenSearch |
+| `notifications/` (generator, lifecycle) | `build-cos-notifications` → `assemble-communication-runtime` | In-process LLM scoring + libSQL dedup; console + Telegram delivery | `lambda/notification-push.ts` — EventBridge Lambda; CDK: `lib/cos-stack.ts` |
+| `notifications/delivery/` adapters | `build-cos-notifications` → `assemble-communication-runtime` | TelegramDeliveryAdapter + ConsoleDeliveryAdapter | Same; Lambda reads TELEGRAM_BOT_TOKEN from env (Secrets Manager via CDK) |
+| `suggestions/` (generator, lifecycle) | `build-cos-suggestions` → `manage-communication-activity` | Pending → approved/rejected/modified; ownerUserId check | Same; no auto-send; human approval before outbound action |
+| `history/` (store, record-activity) | `build-cos-knowledge-graph` → `build-ai-agents` | ActivityEventNode for product mutations | DynamoDB when `COS_GRAPH_BACKEND=dynamo` |
+| `config/aws-credentials.ts` | (COS-specific) | SSO via `fromSSO({profile})` or static keys | Same; SSO recommended for production |
+| `lib/cos-stack.ts` | (CDK — Phase 2+) | DynamoDB + OpenSearch Serverless + Lambda + EventBridge | `npx cdk deploy --profile cos-default` |
+
+### Scope boundary
+
+- **In this repo:** Chief of Staff product code — connectors, graph, RAG, notifications, suggestions, history, LLM provider, CLI, CDK stack.
+- **In team-kit (dev-time only):** Parent skill patterns and specialists (`/alakazam`, `/espeon`, `/oranguru`, `/chatot`, `/xatu`, `/ash`, `/arceus`). Loaded as a Cursor local plugin — not vendored here.
+- **Never duplicated:** Generic RAG frameworks, communication scoring, audience selection — compose from team-kit skills.
+
+### ownerUserId boundary (AC-16)
+
+Every read path must filter by `ownerUserId`:
+
+- `rag/retrieve.ts` — mandatory in `RetrievalFilter`
+- `rag/opensearch-store.ts` — `filter: [{ term: { ownerUserId } }]` on knn queries
+- `graph/dynamo-store.ts` — GSI queries keyed on `ownerUserId`
+- `notifications/generator.ts` — all queries scoped to `ownerUserId`
+
+Agent-level audit and Espeon CLI compliance: `docs/ARCHITECTURE.md` § Team-kit alignment. Pin: `external/soofi-team-kit.lock` (`8e85bc1`).
 
 ## Maintenance Rule
 

@@ -155,7 +155,7 @@ Canonical wording, AC numbering, rollup, gaps, and proof pointers (for Cursor co
 | `docs/` | Architecture, deployment, acceptance criteria |
 | `fixtures/` | Contributor/CI sample data only ([fixtures/README.md](fixtures/README.md)) |
 | `skills/` | COS implementation overlays (load team-kit parent skills first) |
-| `scripts/` | Bootstrap and team-kit setup (tracked); `scripts/infra/` is local-only |
+| `scripts/` | AWS bootstrap, team-kit setup (tracked); `scripts/infra/` is local-only helpers |
 
 ## For contributors and CI
 

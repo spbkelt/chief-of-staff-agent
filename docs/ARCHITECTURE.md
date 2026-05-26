@@ -88,6 +88,8 @@ Operators on the demo track need Bedrock (or configured LLM) for embeddings/LLM;
 
 ## Team-kit alignment (audit @ `8e85bc1`)
 
+**Module → skill → AWS mapping:** `docs/ACCEPTANCE_CRITERIA.md` § Team-Kit Module Alignment.
+
 **Governance:** When a team-kit agent owns a concern, follow that agent’s skills/rules—do not invent contradictory defaults. Custom COS code is allowed only when **no** kit agent applies (e.g. `bigboss`, pull connectors, executive brief UX).
 
 | Agent | Applies to COS? | Mandate | COS status |

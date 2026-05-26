@@ -24,7 +24,7 @@ pnpm setup-soofi-plugin
 pnpm verify-soofi-plugin
 ```
 
-Audit team-kit agents against COS at pin `external/soofi-team-kit.lock` (`8e85bc1`). Map gaps in `docs/ARCHITECTURE.md` § Team-kit alignment — do not add new markdown files for audits.
+Audit team-kit agents against COS at pin `external/soofi-team-kit.lock` (`8e85bc1`). Map module gaps in `docs/ACCEPTANCE_CRITERIA.md` § Team-Kit Module Alignment; agent audit in `docs/ARCHITECTURE.md` § Team-kit alignment — do not add new markdown audit files.
 
 Route via `/arceus` before implementing; load parent skills then `skills/build-cos-*` overlays.
 
@@ -34,7 +34,7 @@ Use `docs/DEPLOYMENT.md` for setup, validation, ingest, and run workflows. Execu
 
 ## Local infra scripts (optional)
 
-One-off helpers (e.g. Asana seed data) live under `scripts/infra/`. That directory is **gitignored** — copy or create scripts locally; do not commit credentials.
+One-off helpers (e.g. `scripts/infra/seed-asana-dummy-data.py`) live under `scripts/infra/`. That directory is **gitignored** — copy or create locally; do not commit credentials. AWS bootstrap: `scripts/bootstrap-aws-cos.sh`, `scripts/fix-aws-sso-config.sh` (tracked).
 
 ## Guardrails
 
